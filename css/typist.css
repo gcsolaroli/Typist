@@ -1,0 +1,22 @@
+.target {
+/*	position: absolute;	*/
+	position: relative;
+	font-family: Helvetica, Arial, Geneva, sans-serif;
+	font-size: 40pt;
+	font-weight: bold;
+	letter-spacing: 7px;
+}
+
+.target span.matched {
+	color: #008e00;
+}
+
+.target span.currentTarget {
+	color: black;
+	border: 1px solid #bdbdbd;
+	padding-left: 5px;
+}
+
+.target span.unmatched {
+	color: #bdbdbd;
+}
