@@ -5,10 +5,10 @@ Typist.TargetController = function (args) {
 	this._target		= args.target			|| Clipperz.Base.exception.raise('MandatoryParameter');
 	this._availableTime	= args.availableTime	|| Clipperz.Base.exception.raise('MandatoryParameter');
 
-//	MochiKit.Signal.connect(MochiKit.DOM.currentDocument(), 'onkeydown',	this, 'onkeydownHandler');
-	MochiKit.Signal.connect(MochiKit.DOM.currentDocument(), 'onkeypress',	this, 'onkeypressHandler');
+	MochiKit.Signal.connect(MochiKit.DOM.currentDocument(),	'onkeypress',	this, 'onkeypressDocumentHandler');
 
-	this._deferredResult;
+	this._deferredResult	= null;
+	this._targetNode		= null;
 
 	return this;
 };
@@ -30,16 +30,17 @@ Typist.TargetController.prototype = {
 
 	//-------------------------------------------------------------------------
 
-	'onkeypressHandler': function (anEvent) {
-//console.log("onkeypressHandler", anEvent, anEvent.key());
-console.log(anEvent.key()['string']);
-		this.deferredResult().callback();
+	'onkeypressDocumentHandler': function (anEvent) {
+		this.target().handleKey(anEvent.key()['string']);
+		this.drawTarget();
+	},
+
+	//-------------------------------------------------------------------------
+
+	'drawTarget': function () {
+		MochiKit.DOM.replaceChildNodes(this.targetNode(), this.target().domElements());
 	},
 	
-//	'onkeydownHandler': function (anEvent) {
-//console.log("onkeydownHandler", anEvent, anEvent.key());
-//	},
-
 	//-------------------------------------------------------------------------
 
 	'deferredResult': function () {
@@ -54,35 +55,22 @@ console.log(anEvent.key()['string']);
 	//-------------------------------------------------------------------------
 
 	'targetNode': function () {
-		return MochiKit.DOM.getElement('target');
+		if (this._targetNode == null) {
+			MochiKit.DOM.replaceChildNodes(MochiKit.DOM.getElement('targets'), MochiKit.DOM.DIV({'class':'target'}));
+			this._targetNode = MochiKit.Selector.findChildElements(MochiKit.DOM.getElement('targets'), ['.target'])[0];
+		}
+		
+		return this._targetNode;
 	},
 
 	//-------------------------------------------------------------------------
 
 	'placeTargetOnScreen': function () {
-		//	matched
-		//	currentTarget
-		//	unmatched
-
-		MochiKit.DOM.replaceChildNodes(this.targetNode(), [MochiKit.DOM.SPAN({'class':'matched'}, 'ab'), MochiKit.DOM.SPAN({'class':'currentTarget'}, 'c'), MochiKit.DOM.SPAN({'class':'unmatched'}, 'def')]);
-		MochiKit.Visual.Move(this.targetNode(), {
-			x:((MochiKit.Style.getViewportDimensions()['w'] - MochiKit.Style.getElementDimensions(this.targetNode())['w']) / 2),
-//			x:0,
-			y: 0,
-			mode:'absolute',
-			duration:0,
-			queue:'break'
-		});
+		this.drawTarget();
 		MochiKit.Style.setElementPosition(this.targetNode(), {
 			x:((MochiKit.Style.getViewportDimensions()['w'] - MochiKit.Style.getElementDimensions(this.targetNode())['w']) / 2),
 			y:0
 		});
-//		MochiKit.Visual.Move(this.targetNode(), {
-//			x:((MochiKit.Style.getViewportDimensions()['w'] - MochiKit.Style.getElementDimensions(this.targetNode())['w']) / 2),
-//			y: 0,
-//			mode:'absolute',
-//			duration:0
-//		});
 	},
 
 	//-------------------------------------------------------------------------
@@ -98,7 +86,7 @@ console.log(anEvent.key()['string']);
 			duration:5,
 			transition:MochiKit.Visual.Transitions.parabolic,
 			afterFinish:MochiKit.Base.method(this.deferredResult(), 'errback'),
-			queue:'break'
+			queue:'replace'
 		});
 		
 	},
