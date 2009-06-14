@@ -26,6 +26,12 @@ Typist.Target.prototype = {
 
 	//-------------------------------------------------------------------------
 
+	'isComplete': function () {
+		return (this.currentTargetIndex() == this.value().length);
+	},
+
+	//-------------------------------------------------------------------------
+
 	'node': function () {
 		if (this._node == null) {
 			this._node = MochiKit.DOM.DIV({'class':'target'});

@@ -30,7 +30,6 @@ Typist.MainController.prototype = {
 	//-------------------------------------------------------------------------
 
 	'run': function () {
-//console.log(">>> run");
 		this.dropTarget();
 	},
 

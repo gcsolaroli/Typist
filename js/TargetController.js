@@ -8,7 +8,6 @@ Typist.TargetController = function (args) {
 	MochiKit.Signal.connect(MochiKit.DOM.currentDocument(),	'onkeypress',	this, 'onkeypressDocumentHandler');
 
 	this._deferredResult	= null;
-//	this._targetNode		= null;
 
 	return this;
 };
@@ -32,6 +31,9 @@ Typist.TargetController.prototype = {
 
 	'onkeypressDocumentHandler': function (anEvent) {
 		this.target().handleKey(anEvent.key()['string']);
+		if (this.target().isComplete()) {
+			this.handleTargetDone();
+		}
 	},
 
 	//-------------------------------------------------------------------------
@@ -45,17 +47,6 @@ Typist.TargetController.prototype = {
 		return this._deferredResult;
 	},
 
-	//-------------------------------------------------------------------------
-/*
-	'targetNode': function () {
-		if (this._targetNode == null) {
-			MochiKit.DOM.replaceChildNodes(MochiKit.DOM.getElement('targets'), MochiKit.DOM.DIV({'class':'target'}));
-			this._targetNode = MochiKit.Selector.findChildElements(MochiKit.DOM.getElement('targets'), ['.target'])[0];
-		}
-		
-		return this._targetNode;
-	},
-*/
 	//-------------------------------------------------------------------------
 
 	'placeTargetOnScreen': function () {
@@ -78,10 +69,32 @@ Typist.TargetController.prototype = {
 			y:maxY,
 			duration:5,
 			transition:MochiKit.Visual.Transitions.parabolic,
-			afterFinish:MochiKit.Base.method(this.deferredResult(), 'errback'),
+//			afterFinish:MochiKit.Base.method(this.deferredResult(), 'errback'),
+			afterFinish:MochiKit.Base.method(this, 'handleTargetMissed'),
 			queue:'replace'
 		});
 		
+	},
+
+	//-------------------------------------------------------------------------
+
+	'handleTargetDone': function () {
+		MochiKit.Visual.Move(this.target().node(), {
+			x:0,
+			y:0,
+			duration:0,
+			transition:MochiKit.Visual.Transitions.parabolic,
+			queue:'replace'
+		});
+//		alert("DONE!");
+		this.deferredResult().callback();
+	},
+
+	//.........................................................................
+
+	'handleTargetMissed': function () {
+//		alert("FAIL");
+		this.deferredResult().errback();
 	},
 
 	//-------------------------------------------------------------------------
