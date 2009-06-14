@@ -8,7 +8,7 @@ Typist.TargetController = function (args) {
 	MochiKit.Signal.connect(MochiKit.DOM.currentDocument(),	'onkeypress',	this, 'onkeypressDocumentHandler');
 
 	this._deferredResult	= null;
-	this._targetNode		= null;
+//	this._targetNode		= null;
 
 	return this;
 };
@@ -32,15 +32,8 @@ Typist.TargetController.prototype = {
 
 	'onkeypressDocumentHandler': function (anEvent) {
 		this.target().handleKey(anEvent.key()['string']);
-		this.drawTarget();
 	},
 
-	//-------------------------------------------------------------------------
-
-	'drawTarget': function () {
-		MochiKit.DOM.replaceChildNodes(this.targetNode(), this.target().domElements());
-	},
-	
 	//-------------------------------------------------------------------------
 
 	'deferredResult': function () {
@@ -53,7 +46,7 @@ Typist.TargetController.prototype = {
 	},
 
 	//-------------------------------------------------------------------------
-
+/*
 	'targetNode': function () {
 		if (this._targetNode == null) {
 			MochiKit.DOM.replaceChildNodes(MochiKit.DOM.getElement('targets'), MochiKit.DOM.DIV({'class':'target'}));
@@ -62,13 +55,13 @@ Typist.TargetController.prototype = {
 		
 		return this._targetNode;
 	},
-
+*/
 	//-------------------------------------------------------------------------
 
 	'placeTargetOnScreen': function () {
-		this.drawTarget();
-		MochiKit.Style.setElementPosition(this.targetNode(), {
-			x:((MochiKit.Style.getViewportDimensions()['w'] - MochiKit.Style.getElementDimensions(this.targetNode())['w']) / 2),
+		this.target().update();
+		MochiKit.Style.setElementPosition(this.target().node(), {
+			x:((MochiKit.Style.getViewportDimensions()['w'] - MochiKit.Style.getElementDimensions(this.target().node())['w']) / 2),
 			y:0
 		});
 	},
@@ -78,9 +71,9 @@ Typist.TargetController.prototype = {
 	'dropTarget': function () {
 		var maxY;
 		
-		maxY = MochiKit.Style.getViewportDimensions()['h'] - MochiKit.Style.getElementDimensions(this.targetNode())['h'] - 1;
+		maxY = MochiKit.Style.getViewportDimensions()['h'] - MochiKit.Style.getElementDimensions(this.target().node())['h'] - 1;
 
-		MochiKit.Visual.Move(this.targetNode(), {
+		MochiKit.Visual.Move(this.target().node(), {
 			x:0,
 			y:maxY,
 			duration:5,
