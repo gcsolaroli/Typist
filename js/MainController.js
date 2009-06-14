@@ -2,7 +2,9 @@ if (typeof(Typist) == 'undefined') { Typist = {}; }
 
 
 Typist.MainController = function (args) {
-	
+	this._currentLessonIndex	= -1;
+	this._currentTestIndex		= 0;
+
 	return this;
 };
 
@@ -11,12 +13,48 @@ Typist.MainController.prototype = {
 
 	//-------------------------------------------------------------------------
 
+	'currentLessonIndex': function () {
+		return this._currentLessonIndex;
+	},
+	
+	'currentTestIndex': function () {
+		return this._currentTestIndex;
+	},
+	
+	//-------------------------------------------------------------------------
+
+	'nextTarget': function () {
+		if (this.currentLessonIndex() == -1) {
+console.log("--- 1");
+			this._currentLessonIndex = 0;
+		} else {
+console.log("--- 2");
+			if (this.currentTestIndex() < Typist.Lessons[this.currentLessonIndex()].length - 1) {
+console.log("--- 3");
+				this._currentTestIndex ++
+			} else if (this.currentLessonIndex() < Typist.Lessons.length - 1) {
+console.log("--- 4");
+				this._currentLessonIndex ++;
+				this._currentTestIndex = 0;
+			} else {
+console.log("--- 5");
+				this._currentLessonIndex = 0;
+				this._currentTestIndex = 0;
+			}
+		}
+
+console.log("" + this.currentLessonIndex() + ", " +  this.currentTestIndex());
+		return Typist.Lessons[this.currentLessonIndex()][this.currentTestIndex()]
+	},
+
+	//-------------------------------------------------------------------------
+
 	'dropTarget': function () {
 		var deferredResult;
 		var	target;
 		var targetController;
 
-		target = new Typist.Target({value:'ciao'});
+		target = new Typist.Target({value:this.nextTarget()});
 		targetController = new Typist.TargetController({target:target, availableTime:10});
 		
 		deferredResult = new Clipperz.Async.Deferred("Typist.MainController.dropTarget", {trace:true});
