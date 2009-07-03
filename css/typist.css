@@ -5,6 +5,8 @@
 	font-size: 40pt;
 	font-weight: bold;
 	letter-spacing: 7px;
+	width: 70%;
+	text-align: center;
 }
 
 .target span.matched {
@@ -13,6 +15,7 @@
 
 .target span.currentTarget {
 	color: black;
+	background-color: #dddddd;
 /*
 	border: 1px solid #bdbdbd;
 	padding-left: 5px;
@@ -22,3 +25,41 @@
 .target span.unmatched {
 	color: #bdbdbd;
 }
+
+#startButton {
+	color: #cccccc;
+}
+
+#startButton:hover {
+	cursor: pointer;
+	color: #aaaaaa;
+}
+
+#readySteadyGo {
+	position: relative;
+	padding-top: 100px;
+}
+
+
+#readySteadyGo h3 {
+	text-align: center;
+	color: #999999;
+}
+
+#readySteadyGo h2 {
+	text-align: center;
+	color: #666666;
+}
+
+#readySteadyGo h1 {
+	text-align: center;
+	color: #333333;
+}
+
+
+
+
+
+
+
+

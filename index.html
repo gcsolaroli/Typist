@@ -12,6 +12,7 @@
 	<script type='text/javascript' src='./js/Clipperz/Visual.js'></script>
 
 
+	<script type='text/javascript' src='./js/Lesson.js'></script>
 	<script type='text/javascript' src='./js/Lessons.js'></script>
 
 	<script type='text/javascript' src='./js/Target.js'></script>
@@ -20,16 +21,30 @@
 	<script type='text/javascript' src='./js/TargetController.js'></script>
 
 
-
-
-
-
-
-
 	<script type='text/javascript' src='./js/main.js'></script>
 	
 </head>
 <body>
+
+	<div id="splashScreen">
+		<h1>Typist</h1>
+		<div id="startBox">
+			<h3 id="startButton">start</h3>
+			<form id="initialLesson">
+				<label>lesson</label>
+				<select id="initialLessonSelect">
+				</select>
+			</form>
+		</div>
+	</div>
+
+	<div id="readySteadyGo">
+		<h3 id="ready">ready</h3>
+		<h2 id="steady">steady</h2>
+		<h1 id="go">go!</h1>
+	</div>
+
 	<div id="targets"></div>
 </body>
 </html>
+
