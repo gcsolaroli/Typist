@@ -56,8 +56,18 @@
 	color: #333333;
 }
 
+#header #errors {
+}
 
+#header #errors #triggeredErrors {
+	font-family: monospace;	
+	color: red;
+}
 
+#header #errors #availableErrors {
+	font-family: monospace;	
+	color: #cccccc;	
+}
 
 
 

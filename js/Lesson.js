@@ -27,6 +27,7 @@ Typist.Lesson.prototype = {
 
 	'run': function () {
 console.log("RUN - " + this.title());
+		return MochiKit.Async.succeed();
 	},
 
 	//-------------------------------------------------------------------------

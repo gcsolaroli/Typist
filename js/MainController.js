@@ -2,8 +2,8 @@ if (typeof(Typist) == 'undefined') { Typist = {}; }
 
 
 Typist.MainController = function (args) {
-	this._currentLessonIndex	= -1;
-	this._currentTestIndex		= 0;
+//	this._currentLessonIndex	= -1;
+//	this._currentTestIndex		= 0;
 
 	return this;
 };
@@ -12,7 +12,7 @@ Typist.MainController.prototype = {
 	__class__: Typist.MainController,
 
 	//-------------------------------------------------------------------------
-
+/*
 	'currentLessonIndex': function () {
 		return this._currentLessonIndex;
 	},
@@ -20,9 +20,9 @@ Typist.MainController.prototype = {
 	'currentTestIndex': function () {
 		return this._currentTestIndex;
 	},
-	
+*/	
 	//-------------------------------------------------------------------------
-
+/*
 	'nextTarget': function () {
 		if (this.currentLessonIndex() == -1) {
 			this._currentLessonIndex = 0;
@@ -40,9 +40,9 @@ Typist.MainController.prototype = {
 
 		return Typist.Lessons[data][this.currentLessonIndex()][this.currentTestIndex()]
 	},
-
+*/
 	//-------------------------------------------------------------------------
-
+/*
 	'dropTarget': function () {
 		var deferredResult;
 		var	target;
@@ -58,7 +58,7 @@ Typist.MainController.prototype = {
 
 		return deferredResult;
 	},
-
+*/
 	//-------------------------------------------------------------------------
 
 	'populateInitialLessonSelectOptions': function () {
@@ -103,7 +103,7 @@ Typist.MainController.prototype = {
 
 		transitionDuration = 0.2;
 
-		deferredResult = new Clipperz.Async.Deferred("readySteadyGoAnimation", {trace:true});
+		deferredResult = new Clipperz.Async.Deferred("readySteadyGoAnimation", {trace:false});
 		deferredResult.addCallback(Clipperz.Visual.deferredAnimation, MochiKit.Visual.appear, 'ready',  {from:0.0, to:1.0, duration:transitionDuration});
 		deferredResult.addCallback(MochiKit.Async.wait, 0.7);
 		deferredResult.addCallback(Clipperz.Visual.deferredAnimation, MochiKit.Visual.fade,	  'ready',  {from:1.0, to:0.0, duration:transitionDuration});
@@ -115,14 +115,19 @@ Typist.MainController.prototype = {
 		deferredResult.addCallback(Clipperz.Visual.deferredAnimation, MochiKit.Visual.appear, 'go',     {from:0.0, to:1.0, duration:transitionDuration});
 		deferredResult.addCallback(MochiKit.Async.wait, 1.5);
 		deferredResult.addCallback(Clipperz.Visual.deferredAnimation, MochiKit.Visual.fade,	  'go',     {from:1.0, to:0.0, duration:transitionDuration});
-		deferredResult.addCallback(MochiKit.Style.hideElement, 'readySteadyGo');
+		deferredResult.addCallbackPass(MochiKit.Style.hideElement, 'readySteadyGo');
 
 		deferredResult.callback();
 		
 		return deferredResult;
-		
 	},
 
+	//-------------------------------------------------------------------------
+
+	'runLesson': function (aLesson) {
+		return aLesson.run();
+	},
+	
 	//-------------------------------------------------------------------------
 
 	'start': function (aLesson) {
@@ -131,10 +136,10 @@ Typist.MainController.prototype = {
 		deferredResult = new Clipperz.Async.Deferred("start");
 		deferredResult.addCallback(Clipperz.Visual.deferredAnimation, MochiKit.Visual.fade, 'splashScreen', {from:1.0, to:0.0, duration:0.5}),
 		deferredResult.addMethod(this, 'readySteadyGoAnimation');
-		deferredResult.addMethod(aLesson, 'run');
+		deferredResult.addCallbackPass(MochiKit.Style.showElement, 'playground');
+		deferredResult.addMethod(this, 'runLesson', aLesson);
 		
 		deferredResult.callback();
-//		this.readySteadyGoAnimation();
 		
 		return deferredResult;
 	},
