@@ -69,7 +69,6 @@ Typist.TargetController.prototype = {
 			y:maxY,
 			duration:5,
 			transition:MochiKit.Visual.Transitions.parabolic,
-//			afterFinish:MochiKit.Base.method(this.deferredResult(), 'errback'),
 			afterFinish:MochiKit.Base.method(this, 'handleTargetMissed'),
 			queue:'replace'
 		});
@@ -86,14 +85,12 @@ Typist.TargetController.prototype = {
 			transition:MochiKit.Visual.Transitions.parabolic,
 			queue:'replace'
 		});
-//		alert("DONE!");
 		this.deferredResult().callback();
 	},
 
 	//.........................................................................
 
 	'handleTargetMissed': function () {
-//		alert("FAIL");
 		this.deferredResult().errback();
 	},
 

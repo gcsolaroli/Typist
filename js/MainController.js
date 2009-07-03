@@ -25,25 +25,19 @@ Typist.MainController.prototype = {
 
 	'nextTarget': function () {
 		if (this.currentLessonIndex() == -1) {
-console.log("--- 1");
 			this._currentLessonIndex = 0;
 		} else {
-console.log("--- 2");
 			if (this.currentTestIndex() < Typist.Lessons[this.currentLessonIndex()].length - 1) {
-console.log("--- 3");
 				this._currentTestIndex ++
 			} else if (this.currentLessonIndex() < Typist.Lessons.length - 1) {
-console.log("--- 4");
 				this._currentLessonIndex ++;
 				this._currentTestIndex = 0;
 			} else {
-console.log("--- 5");
 				this._currentLessonIndex = 0;
 				this._currentTestIndex = 0;
 			}
 		}
 
-console.log("" + this.currentLessonIndex() + ", " +  this.currentTestIndex());
 		return Typist.Lessons[this.currentLessonIndex()][this.currentTestIndex()]
 	},
 
