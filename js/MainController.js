@@ -42,24 +42,6 @@ Typist.MainController.prototype = {
 	},
 */
 	//-------------------------------------------------------------------------
-/*
-	'dropTarget': function () {
-		var deferredResult;
-		var	target;
-		var targetController;
-
-		target = new Typist.Target({value:this.nextTarget()});
-		targetController = new Typist.TargetController({target:target, availableTime:10});
-		
-		deferredResult = new Clipperz.Async.Deferred("Typist.MainController.dropTarget", {trace:true});
-		deferredResult.addMethod(targetController, 'run');
-		deferredResult.addMethod(this, 'dropTarget');
-		deferredResult.callback('go');
-
-		return deferredResult;
-	},
-*/
-	//-------------------------------------------------------------------------
 
 	'populateInitialLessonSelectOptions': function () {
 		MochiKit.Iter.forEach(Typist.Lessons.lessons(), function (aLesson) {
@@ -104,15 +86,15 @@ Typist.MainController.prototype = {
 		transitionDuration = 0.2;
 
 		deferredResult = new Clipperz.Async.Deferred("readySteadyGoAnimation", {trace:false});
-		deferredResult.addCallback(Clipperz.Visual.deferredAnimation, MochiKit.Visual.appear, 'ready',  {from:0.0, to:1.0, duration:transitionDuration});
+		deferredResult.addCallback(Clipperz.Visual.deferredAnimation, MochiKit.Visual.appear, 'ready',  {from:0.0, to:1.0, duration:transitionDuration * 2});
 		deferredResult.addCallback(MochiKit.Async.wait, 0.7);
 		deferredResult.addCallback(Clipperz.Visual.deferredAnimation, MochiKit.Visual.fade,	  'ready',  {from:1.0, to:0.0, duration:transitionDuration});
 
 		deferredResult.addCallback(Clipperz.Visual.deferredAnimation, MochiKit.Visual.appear, 'steady', {from:0.0, to:1.0, duration:transitionDuration});
 		deferredResult.addCallback(MochiKit.Async.wait, 1.0);
-		deferredResult.addCallback(Clipperz.Visual.deferredAnimation, MochiKit.Visual.fade,	  'steady', {from:1.0, to:0.0, duration:transitionDuration});
+		deferredResult.addCallback(Clipperz.Visual.deferredAnimation, MochiKit.Visual.fade,	  'steady', {from:1.0, to:0.0, duration:transitionDuration / 2});
 
-		deferredResult.addCallback(Clipperz.Visual.deferredAnimation, MochiKit.Visual.appear, 'go',     {from:0.0, to:1.0, duration:transitionDuration});
+		deferredResult.addCallback(Clipperz.Visual.deferredAnimation, MochiKit.Visual.appear, 'go',     {from:0.0, to:1.0, duration:transitionDuration / 2});
 		deferredResult.addCallback(MochiKit.Async.wait, 1.5);
 		deferredResult.addCallback(Clipperz.Visual.deferredAnimation, MochiKit.Visual.fade,	  'go',     {from:1.0, to:0.0, duration:transitionDuration});
 		deferredResult.addCallbackPass(MochiKit.Style.hideElement, 'readySteadyGo');
@@ -124,8 +106,27 @@ Typist.MainController.prototype = {
 
 	//-------------------------------------------------------------------------
 
+	'dropTarget': function (aLesson) {
+		var deferredResult;
+		var	target;
+		var targetController;
+
+		target = aLesson.nextTarget();
+		targetController = new Typist.TargetController(target);
+		
+		deferredResult = new Clipperz.Async.Deferred("Typist.MainController.dropTarget", {trace:true});
+		deferredResult.addMethod(targetController, 'run');
+		deferredResult.addMethod(this, 'dropTarget', aLesson);
+		deferredResult.callback();
+
+		return deferredResult;
+	},
+
+	//-------------------------------------------------------------------------
+
 	'runLesson': function (aLesson) {
-		return aLesson.run();
+//		return aLesson.run();
+		return this.dropTarget(aLesson);
 	},
 	
 	//-------------------------------------------------------------------------

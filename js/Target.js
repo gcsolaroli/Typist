@@ -2,9 +2,13 @@ if (typeof(Typist) == 'undefined') { Typist = {}; }
 
 
 Typist.Target = function (args) {
-	this._value					= args.value	|| Clipperz.Base.exception.raise('MandatoryParameter');
+console.log(">>> new Typist.Target", args);
+	this._value					= args.value			|| Clipperz.Base.exception.raise('MandatoryParameter_1');
+	this._availableTime			= args.availableTime	|| Clipperz.Base.exception.raise('MandatoryParameter_2');
+
 	this._currentTargetIndex	= 0;
 	this._node					= null;
+console.log("<<< new Typist.Target");
 	
 	return this;
 };

@@ -6,10 +6,12 @@ Typist.Lessons = {
 	//-------------------------------------------------------------------------
 
 	'data': [
+/*
 		{
 			'title':	"random sentences",
 			'tests':	['The brown Fox jumped over the lazy dog']
 		},
+*/
 		{
 			'title':	"left  hand - central row",
 			'tests':	['adad', 'asas', 'fasa', 'dafa', 'safa', 'afsd', 'sadf']

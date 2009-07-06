@@ -1,9 +1,9 @@
 if (typeof(Typist) == 'undefined') { Typist = {}; }
 
 
-Typist.TargetController = function (args) {
-	this._target		= args.target			|| Clipperz.Base.exception.raise('MandatoryParameter');
-	this._availableTime	= args.availableTime	|| Clipperz.Base.exception.raise('MandatoryParameter');
+Typist.TargetController = function (aTarget) {
+	this._target		= aTarget				|| Clipperz.Base.exception.raise('MandatoryParameter_3');
+//	this._availableTime	= args.availableTime	|| Clipperz.Base.exception.raise('MandatoryParameter');
 
 	MochiKit.Signal.connect(MochiKit.DOM.currentDocument(),	'onkeypress',	this, 'onkeypressDocumentHandler');
 
