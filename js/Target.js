@@ -61,6 +61,9 @@ Typist.Target.prototype = {
 		if (this.value().charAt(this.currentTargetIndex()) == aKey) {
 			this._currentTargetIndex ++;
 			this.update();
+			MochiKit.Signal.signal(Clipperz.Signal.NotificationCenter, 'correctKey');
+		} else {
+			MochiKit.Signal.signal(Clipperz.Signal.NotificationCenter, 'wrongKey');
 		}
 	},
 

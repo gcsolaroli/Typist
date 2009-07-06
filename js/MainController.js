@@ -4,6 +4,14 @@ if (typeof(Typist) == 'undefined') { Typist = {}; }
 Typist.MainController = function (args) {
 //	this._currentLessonIndex	= -1;
 //	this._currentTestIndex		= 0;
+	
+	this._numberOfErrors	= 0;
+	this._totalErrors		= 10;
+
+	this.updateErrorDisplay();
+
+	MochiKit.Signal.connect(Clipperz.Signal.NotificationCenter, 'correctKey',	this, 'correctKeyHandler');
+	MochiKit.Signal.connect(Clipperz.Signal.NotificationCenter, 'wrongKey',		this, 'wrongKeyHandler');
 
 	return this;
 };
@@ -143,6 +151,35 @@ Typist.MainController.prototype = {
 		deferredResult.callback();
 		
 		return deferredResult;
+	},
+
+	//-------------------------------------------------------------------------
+
+	'updateErrorDisplay': function () {
+		MochiKit.DOM.replaceChildNodes('triggeredErrors', MochiKit.Iter.repeat('x', this._numberOfErrors));
+		MochiKit.DOM.replaceChildNodes('availableErrors', MochiKit.Iter.repeat('x', (this._totalErrors - this._numberOfErrors)));
+	},
+
+	//-------------------------------------------------------------------------
+
+	'updateNumberOfErrors': function () {
+		this._numberOfErrors ++;
+		
+		if (this._numberOfErrors > this.totalErrors) {
+			throw "TOO_MANY_ERRORS";
+		}
+
+		this.updateErrorDisplay();
+	},
+
+	//-------------------------------------------------------------------------
+
+	'correctKeyHandler': function (anEvent) {
+console.log("OK");
+	},
+
+	'wrongKeyHandler': function (anEvent) {
+		this.updateNumberOfErrors();
 	},
 
 	//-------------------------------------------------------------------------
